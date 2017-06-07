@@ -105,7 +105,7 @@ function pcSetup(remoteId) {
   pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.skyway.io:3478' }] });
   pc.remoteId = remoteId;
   pc.onicecandidate = function (evt) {
-    console.log('%cpc onicecandidate', 'background: #79b74a; font-weight: bold');
+    console.log('%cpc onicecandidate', 'background: #79b74a; font-weight: bold; padding: 4px;');
     socket.send(JSON.stringify({
       type: 'CANDIDATE',
       cnd: evt.candidate,
@@ -113,7 +113,7 @@ function pcSetup(remoteId) {
     }));
   }
   pc.onnegotiationneeded = function (evt) {
-    console.log('%cpc onnegotiationneeded', 'background: #5d76a7; font-weight: bold');
+    console.log('%cpc onnegotiationneeded', 'background: #5d76a7; font-weight: bold; padding: 4px;');
     var that = this;
     that.createOffer()
       .then(offer => {
@@ -127,7 +127,7 @@ function pcSetup(remoteId) {
       });
   }
   pc.onaddstream = function (evt) {
-    console.log('%cpc onaddstream', 'background: #ea4335, font-weight: bold');
+    console.log('%cpc onaddstream', 'background: #ea4335, font-weight: bold; padding: 4px;');
     remoteView.srcObject = evt.stream;
   }
 }
