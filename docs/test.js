@@ -72,12 +72,15 @@ function socketSetup() {
     if (msg.type === 'OFFER') {
       pc.setRemoteDescription(new RTCPeerConnection(msg.ofr))
         .then(_ => {
+          console.log('%ccreate answer', 'color: red');
           return pc.createAnswer();
         })
         .then(answer => {
+          console.log('%csetLocalDescription(answer)', 'color: red', answer);
           return pc.setLocalDescription(answer);
         })
         .then(_ => {
+          console.log('%cSend answer', 'color: red', pc.localDescription);
           socket.send(JSON.stringify({
             type: 'ANSWER',
             ans: pc.localDescription,
@@ -85,14 +88,16 @@ function socketSetup() {
           }));
         })
         .catch(ex => {
-          console.log('Recieve Offer error.', ex);
+          console.log('%cRecieve Offer error.', ex);
         });
     } else if (msg.type === 'ANSWER') {
+      console.log('%cRecieve answer', msg.ans);
       pc.setRemoteDescription(new RTCSessionDescription(msg.ans))
         .catch(ex => {
           console.log('Recieve Answer error.', ex);
         });
     } else if (msg.type === 'CANDIDATE') {
+      console.log('%cRecieve candidate', 'color: red', msg.cnd);
       pc.addIceCandidate(new RTCIceCandidate(msg.cnd))
         .catch(ex => {
           console.log('Recieve Candidate error.', ex);
