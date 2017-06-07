@@ -28,7 +28,7 @@ function webCamSetup(elm) {
   }).then(stream => {
     setTimeout(_ => {
       elm.srcObject = stream;
-    }, 2000);
+    }, elm.id === 'selfView' ? 2000 : 0);
     return stream;
   }).catch(ex => console.log('getUserMedia error.', ex));
 }
