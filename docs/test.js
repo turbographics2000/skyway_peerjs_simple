@@ -20,15 +20,15 @@
 //   callSetup(call);
 // });
 
-// function webCamSetup(elm) {
-//   return navigator.mediaDevices.getUserMedia({ 
-//     video: true, 
-//     audio: false 
-//   }).then(stream => {
-//     elm.srcObject = stream;
-//     return stream;
-//   }).catch(ex => console.log('getUserMedia error.', ex));
-// }
+function webCamSetup(elm) {
+  return navigator.mediaDevices.getUserMedia({ 
+    video: true, 
+    audio: false 
+  }).then(stream => {
+    elm.srcObject = stream;
+    return stream;
+  }).catch(ex => console.log('getUserMedia error.', ex));
+}
 
 // function callSetup(call) {
 //   call.on('stream', stream => {
@@ -50,6 +50,13 @@ fetch(`https://skyway.io/${apiKey}/id?ts=${Date.now()}${Math.random()}`).then(re
   socketSetup(socket);
   btnStart.style.display = '';
 });
+
+btnStart.onclick = evt => {
+  pcSetup(callTo.value);
+  webCamSetup(selfView).then(stream => {
+    pc.addStream(stream);
+  });
+}
 
 function socketSetup() {
   socket.onopen = function() {
