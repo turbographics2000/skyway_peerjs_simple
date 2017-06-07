@@ -67,6 +67,7 @@ function socketSetup() {
     var msg = JSON.parse(evt.data);
     console.log('msg', JSON.stringify(msg));
     if (!pc) {
+      console.log('pcSetup', 'remoteId:' + msg.src, msg);
       pcSetup(msg.src);
     }
     if (msg.type === 'OFFER') {
