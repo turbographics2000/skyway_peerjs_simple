@@ -104,6 +104,8 @@ function socketSetup() {
         .catch(ex => {
           console.log('Recieve Candidate error.', ex);
         });
+    } else if (msg.type === 'PING') {
+      socket.send(JSON.stringify({ type: 'PONG' }));
     }
   }
 }
