@@ -64,7 +64,7 @@ function socketSetup() {
   }
   socket.onmessage = function(evt) {
     var msg = JSON.parse(evt.data);
-    console.log(JSON.stringify(msg));
+    console.log('msg', JSON.stringify(msg));
     if(!pc) {
       pcSetup(msg.dst);
     }
