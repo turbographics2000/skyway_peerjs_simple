@@ -73,7 +73,7 @@ function socketSetup() {
       console.log('%cRecieve offer', 'color: red', msg.ofr);
       pc.setRemoteDescription(new RTCPeerConnection(msg.ofr))
         .then(_ => {
-          console.log('%ccreate answer', 'color: red');
+          console.log('%cCreate answer', 'color: red');
           return pc.createAnswer();
         })
         .then(answer => {
