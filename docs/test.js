@@ -66,7 +66,7 @@ function socketSetup() {
   socket.onmessage = function (evt) {
     var msg = JSON.parse(evt.data);
     console.log('msg', JSON.stringify(msg));
-    if (!pc) {
+    if (!pc && msg.src) {
       console.log('pcSetup', 'remoteId:' + msg.src, msg);
       pcSetup(msg.src);
     }
