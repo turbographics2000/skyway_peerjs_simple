@@ -1,10 +1,18 @@
 var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', debug: 3 });
 
+function webCamSetup() {
+  return navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+    cnv.style.display = 'none';
+    selfView.srcObject = stream;
+    return stream;
+  }).catch(ex => console.log('getUserMedia error.', ex));
+}
+
 peer.on('open', id => {
   console.log('peer on "open"');
   myIdDisp.textContent = id;
   btnStart.onclick = evt => {
-    webCamSetup(selfStreamContainer).then(stream => {
+    webCamSetup().then(stream => {
       var call = peer.call(callTo.value, stream);
       callSetup(call);
     });
@@ -13,56 +21,25 @@ peer.on('open', id => {
 
 peer.on('call', call => {
   console.log('peer on "call"');
-  webCamSetup(selfStreamContainer).then(stream => {
+  webCamSetup().then(stream => {
     call.answer(stream);
   });
   callSetup(call);
 });
 
-peer.on('connection', conn => {
-  console.log('peer on "connection"');
-  dcSetup(conn);
-});
-
 function callSetup(call) {
   call.on('stream', stream => {
     console.log('call on "stream"');
-    createVideoElm(remoteStreamContainer, stream);
+    remoteView.srcObject = stream;
+    btnAddStream.style.display = '';
+    btnAddStream.onclick = evt => {
+      canvasSetup(isSafari ? 'ed_scaled.mp4' : 'tos_scaled.mp4').then(stream => {
+        var call = peer.call(callTo.value, stream);
+        callSetup(call);
+      });
+    }
   });
   call.on('close', _ => {
     console.log('call on "close"');
   });
-}
-
-function dcSetup(conn) {
-  conn.on('data', function (data) {
-    console.log('conn on "data"');
-    console.log(data);
-  });
-  conn.on('open', _ => {
-    console.log('conn(dc) on "open"');
-    conn.send('hi!');
-    btnStart.style.display = 'none';
-  });
-}
-
-function createVideoElm(container, stream) {
-  var vid = document.createElement('video');
-  vid.muted = true;
-  vid.autoplay = true;
-  vid.onloadedmetadata = function(evt) {
-    console.log('onloadedmetadata');
-    this.style.width = (this.videoWidth / this.videoHeight * 160) + 'px';
-    this.style.height = '160px';
-    container.appendChild(vid);
-  }
-  vid.srcObject = stream;
-  return vid;
-}
-
-function webCamSetup(container, video = true, audio = true) {
-  return navigator.mediaDevices.getUserMedia({ video, audio }).then(stream => {
-    createVideoElm(container, stream);
-    return stream;
-  }).catch(ex => console.log('getUserMedia error.', ex));
 }
