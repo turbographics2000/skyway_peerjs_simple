@@ -143,14 +143,11 @@ function pcSetup(remoteId) {
     console.log('%cpc onaddstream', 'background: #ea4335, font-weight: bold; padding: 1px;');
     remoteView.srcObject = evt.stream;
   }
-}
-
-function webCamSetup(elm) {
-  return navigator.mediaDevices.getUserMedia({
+  navigator.mediaDevices.getUserMedia({
     video: true,
     audio: false
   }).then(stream => {
-    elm.srcObject = stream;
-    return stream;
+    selfView.srcObject = stream;
+    pc.addStream(stream);
   }).catch(ex => console.log('getUserMedia error.', ex));
 }
