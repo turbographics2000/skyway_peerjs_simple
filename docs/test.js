@@ -81,7 +81,7 @@ function socketSetup() {
           return pc.setLocalDescription(answer);
         })
         .then(_ => {
-          console.log('%cSend answer', 'color: red', pc.localDescription);
+          console.log('%cSend answer', 'color: red', 'dst:' + pc.remoteId, pc.localDescription);
           socket.send(JSON.stringify({
             type: 'ANSWER',
             ans: pc.localDescription,
