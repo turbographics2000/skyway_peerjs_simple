@@ -100,7 +100,7 @@ function socketSetup() {
         });
     } else if (msg.type === 'CANDIDATE') {
       console.log('%cRecieve candidate', 'color: red', msg.cnd);
-      pc.addIceCandidate(new RTCIceCandidate(msg.cnd))
+      pc.addIceCandidate(new RTCIceCandidate(msg.cnd.candidate))
         .catch(ex => {
           console.log('Recieve Candidate error.', ex);
         });
