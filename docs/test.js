@@ -21,9 +21,9 @@
 // });
 
 function webCamSetup(elm) {
-  return navigator.mediaDevices.getUserMedia({ 
-    video: true, 
-    audio: false 
+  return navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: false
   }).then(stream => {
     elm.srcObject = stream;
     return stream;
@@ -59,16 +59,16 @@ btnStart.onclick = evt => {
 }
 
 function socketSetup() {
-  socket.onopen = function() {
+  socket.onopen = function () {
     console.log('socket on open');
   }
-  socket.onmessage = function(evt) {
+  socket.onmessage = function (evt) {
     var msg = JSON.parse(evt.data);
     console.log('msg', JSON.stringify(msg));
-    if(!pc) {
+    if (!pc) {
       pcSetup(msg.dst);
     }
-    if(msg.type === 'OFFER') {
+    if (msg.type === 'OFFER') {
       pc.setRemoteDescription(new RTCPeerConnection(msg.ofr))
         .then(_ => {
           return pc.createAnswer();
@@ -86,12 +86,12 @@ function socketSetup() {
         .catch(ex => {
           console.log('Recieve Offer error.', ex);
         });
-    } else if(msg.type === 'ANSWER') {
+    } else if (msg.type === 'ANSWER') {
       pc.setRemoteDescription(new RTCSessionDescription(msg.ans))
         .catch(ex => {
           console.log('Recieve Answer error.', ex);
         });
-    } else if(msg.type === 'CANDIDATE') {
+    } else if (msg.type === 'CANDIDATE') {
       pc.addIceCandidate(new RTCIceCandidate(msg.cnd))
         .catch(ex => {
           console.log('Recieve Candidate error.', ex);
@@ -104,25 +104,26 @@ function pcSetup(remoteId) {
   pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.skyway.io:3478' }] });
   pc.remoteId = remoteId;
   pc.onicecandidate = function (evt) {
-    socket.send(JSON.stringify({ 
-      type: 'CANDIDATE', 
-      dst: this.remoteId 
+    socket.send(JSON.stringify({
+      type: 'CANDIDATE',
+      cnd: evt.candidate,
+      dst: this.remoteId
     }));
   }
-  pc.onnegotiationneeded = function(evt) {
+  pc.onnegotiationneeded = function (evt) {
     var that = this;
     that.createOffer()
       .then(offer => {
         return that.setLocalDescription(offer);
       })
       .then(_ => {
-        socket.send(JSON.stringify({ 
-          type: 'OFFER', 
+        socket.send(JSON.stringify({
+          type: 'OFFER',
           dst: that.remoteId
         }));
       });
   }
-  pc.onaddstream = function(evt) {
+  pc.onaddstream = function (evt) {
     remoteView.srcObject = evt.stream;
   }
 }
