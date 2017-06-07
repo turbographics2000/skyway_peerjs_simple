@@ -1,18 +1,10 @@
 var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', debug: 3 });
 
-function webCamSetup() {
-  return navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-    cnv.style.display = 'none';
-    selfView.srcObject = stream;
-    return stream;
-  }).catch(ex => console.log('getUserMedia error.', ex));
-}
-
 peer.on('open', id => {
   console.log('peer on "open"');
   myIdDisp.textContent = id;
   btnStart.onclick = evt => {
-    webCamSetup().then(stream => {
+    webCamSetup(selfView).then(stream => {
       var call = peer.call(callTo.value, stream);
       callSetup(call);
     });
@@ -21,23 +13,26 @@ peer.on('open', id => {
 
 peer.on('call', call => {
   console.log('peer on "call"');
-  webCamSetup().then(stream => {
+  webCamSetup(selfView).then(stream => {
     call.answer(stream);
   });
   callSetup(call);
 });
 
+function webCamSetup(elm) {
+  return navigator.mediaDevices.getUserMedia({ 
+    video: true, 
+    audio: false 
+  }).then(stream => {
+    elm.srcObject = stream;
+    return stream;
+  }).catch(ex => console.log('getUserMedia error.', ex));
+}
+
 function callSetup(call) {
   call.on('stream', stream => {
     console.log('call on "stream"');
     remoteView.srcObject = stream;
-    btnAddStream.style.display = '';
-    btnAddStream.onclick = evt => {
-      canvasSetup(isSafari ? 'ed_scaled.mp4' : 'tos_scaled.mp4').then(stream => {
-        var call = peer.call(callTo.value, stream);
-        callSetup(call);
-      });
-    }
   });
   call.on('close', _ => {
     console.log('call on "close"');
