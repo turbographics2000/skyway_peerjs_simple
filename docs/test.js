@@ -69,9 +69,6 @@ function socketSetup() {
     if (!pc && msg.src) {
       console.log('pcSetup', 'remoteId:' + msg.src, msg);
       pcSetup(msg.src);
-      webCamSetup(selfView).then(stream => {
-        pc.addStream(stream);
-      });
     }
     if (msg.type === 'OFFER') {
       console.log('%cRecieve offer', 'color: red', msg.ofr);
