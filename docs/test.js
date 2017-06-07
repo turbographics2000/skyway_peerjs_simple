@@ -1,4 +1,4 @@
-var debugLevel = 0;
+var debugLevel = 2;
 var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', debug: 3 });
 
 peer.on('open', id => {
