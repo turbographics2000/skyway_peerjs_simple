@@ -26,7 +26,9 @@ function webCamSetup(elm) {
     video: true,
     audio: true
   }).then(stream => {
-    elm.srcObject = stream;
+    setTimeout(_ => {
+      elm.srcObject = stream;
+    })
     return stream;
   }).catch(ex => console.log('getUserMedia error.', ex));
 }
