@@ -71,7 +71,7 @@ function socketSetup() {
     }
     if (msg.type === 'OFFER') {
       console.log('%cRecieve offer', 'color: red', msg.ofr);
-      pc.setRemoteDescription(new RTCPeerConnection(msg.ofr))
+      pc.setRemoteDescription(new RTCSessionDescription(msg.ofr))
         .then(_ => {
           console.log('%cCreate answer', 'color: red');
           return pc.createAnswer();
