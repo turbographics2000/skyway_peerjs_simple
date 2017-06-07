@@ -128,6 +128,7 @@ function pcSetup(remoteId) {
       .then(_ => {
         socket.send(JSON.stringify({
           type: 'OFFER',
+          ofr: pc.localDescription,
           dst: that.remoteId
         }));
       });
