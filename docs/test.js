@@ -98,9 +98,9 @@ function socketSetup() {
         .catch(ex => {
           console.log('Recieve Answer error.', ex);
         });
-    } else if (msg.type === 'CANDIDATE') {
+    } else if (msg.type === 'CANDIDATE' && msg.cnd) {
       console.log('%cRecieve candidate', 'color: red', msg.cnd);
-      pc.addIceCandidate(new RTCIceCandidate(msg.cnd.candidate))
+      pc.addIceCandidate(new RTCIceCandidate(msg.cnd))
         .catch(ex => {
           console.log('Recieve Candidate error.', ex);
         });
