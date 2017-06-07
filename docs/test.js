@@ -88,6 +88,9 @@ function socketSetup() {
             ans: pc.localDescription,
             dst: pc.remoteId
           }));
+          webCamSetup(selfView).then(stream => {
+            pc.addStream(stream);
+          });
         })
         .catch(ex => {
           console.log('Recieve Offer error.', ex);
