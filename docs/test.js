@@ -81,7 +81,7 @@ function socketSetup() {
           socket.send(JSON.stringify({
             type: 'ANSWER',
             ans: pc.localDescription,
-            dst: myId
+            dst: pc.remoteId
           }));
         })
         .catch(ex => {
