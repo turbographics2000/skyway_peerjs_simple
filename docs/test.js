@@ -69,6 +69,9 @@ function socketSetup() {
     if (!pc && msg.src) {
       console.log('pcSetup', 'remoteId:' + msg.src, msg);
       pcSetup(msg.src);
+      webCamSetup(selfView).then(stream => {
+        pc.addStream(stream);
+      });
     }
     if (msg.type === 'OFFER') {
       console.log('%cRecieve offer', 'color: red', msg.ofr);
@@ -88,9 +91,6 @@ function socketSetup() {
             ans: pc.localDescription,
             dst: pc.remoteId
           }));
-          webCamSetup(selfView).then(stream => {
-            pc.addStream(stream);
-          });
         })
         .catch(ex => {
           console.log('Recieve Offer error.', ex);
