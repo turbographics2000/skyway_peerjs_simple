@@ -89,7 +89,7 @@ function socketSetup() {
           }));
         })
         .catch(ex => {
-          console.log('%cRecieve Offer error.', ex);
+          console.log('Recieve Offer error.', ex);
         });
     } else if (msg.type === 'ANSWER') {
       console.log('%cRecieve answer', msg.ans);
