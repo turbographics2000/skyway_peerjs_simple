@@ -113,7 +113,7 @@ function pcSetup(remoteId) {
     }));
   }
   pc.onnegotiationneeded = function (evt) {
-    console.log('%cpc onnegotiationneeded', 'background: #5d76a7; font-weight: bold; padding: 4px;');
+    console.log('%cpc onnegotiationneeded', 'background: #5d76a7; color: white; font-weight: bold; padding: 4px;');
     var that = this;
     that.createOffer()
       .then(offer => {
