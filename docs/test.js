@@ -43,8 +43,9 @@
 
 var apiKey = 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c';
 var token = Math.random().toString(36).substr(2);
-var socket, pc;
-fetch(`https://skyway.io/${apiKey}/id?ts=${Date.now()}${Math.random()}`).then(res => res.text()).then(myId => {
+var socket, pc, myId;
+fetch(`https://skyway.io/${apiKey}/id?ts=${Date.now()}${Math.random()}`).then(res => res.text()).then(id => {
+  myIdDisp.textContent = myId = id;
   socket = new WebSocket(`wss://skyway.io/peerjs?key=${apiKey}&id=${myId}&token=${token}`);
 });
 
