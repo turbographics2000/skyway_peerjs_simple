@@ -38,7 +38,7 @@ peer.on('call', call => {
 function webCamSetup(elm) {
   return navigator.mediaDevices.getUserMedia({
     video: true,
-    audio: true
+    audio: false
   }).then(stream => {
     elm.srcObject = stream;
     return stream;
