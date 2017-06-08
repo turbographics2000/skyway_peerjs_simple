@@ -649,7 +649,7 @@
 
       if (!!pc.remoteDescription && !!pc.remoteDescription.type) return;
 
-      pc.createOffer(function (offer) {
+      pc.createOffer(connection.options.constraints).then(function (offer) {
         util.log('Created offer.');
 
         if (!util.supports.sctp && connection.type === 'data' && connection.reliable) {
@@ -681,10 +681,10 @@
           connection.provider.emitError('webrtc', err);
           util.log('Failed to setLocalDescription, ', err);
         });
-      }, function (err) {
+      }).catch(function (err) {
         connection.provider.emitError('webrtc', err);
         util.log('Failed to createOffer, ', err);
-      }, connection.options.constraints);
+      });
     }
 
     Negotiator._makeAnswer = function (connection) {
