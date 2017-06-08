@@ -11,6 +11,16 @@ peer.on('open', id => {
       callSetup(call);
     });
   }
+  var siId = null;
+  siId = setInterval(_ => {
+    peer.listAllPeers(function (list) {
+      if (list && list.length > 1) {
+        clearInterval(siId);
+        callTo.value = list.filter(x => x !== myId)[0];
+        btnStart();
+      }
+    });
+  }, 2000);
 });
 
 peer.on('call', call => {
