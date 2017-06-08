@@ -425,7 +425,7 @@
       if (connection.type === 'media' && options._stream) {
         // Add the stream.
         if ('addTrack' in pc) {
-          options._stream.getTracks().then(track => {
+          options._stream.getTracks().forEach(track => {
             pc.addtrack(track, options._stream);
           });
         } else {
