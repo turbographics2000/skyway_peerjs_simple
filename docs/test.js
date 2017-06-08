@@ -15,7 +15,6 @@ peer.on('open', id => {
         clearInterval(siId);
         if (!selfView.srcObject && !remoteView.srcObject) {
           callTo.value = list.filter(x => x !== myIdDisp.textContent)[0];
-          start();
         }
       }
     });
