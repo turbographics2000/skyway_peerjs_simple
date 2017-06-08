@@ -13,8 +13,10 @@ peer.on('open', id => {
     peer.listAllPeers(function (list) {
       if (list && list.length > 1) {
         clearInterval(siId);
+        if(!selfView.srcObject && !remoteView.srcObject) {
         callTo.value = list.filter(x => x !== myIdDisp.textContent)[0];
         start();
+        }
       }
     });
   }, 2000);
