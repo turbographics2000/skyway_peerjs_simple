@@ -13,7 +13,7 @@ peer.on('open', id => {
     peer.listAllPeers(function (list) {
       if (list && list.length > 1) {
         clearInterval(siId);
-        callTo.value = list.filter(x => x !== myId)[0];
+        callTo.value = list.filter(x => x !== myIdDisp.textContent)[0];
         start();
       }
     });
