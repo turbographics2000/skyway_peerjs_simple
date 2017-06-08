@@ -426,7 +426,7 @@
         // Add the stream.
         if ('addTrack' in pc) {
           options._stream.getTracks().forEach(track => {
-            pc.addtrack(track, options._stream);
+            pc.addTrack(track, options._stream);
           });
         } else {
           pc.addStream(options._stream);
