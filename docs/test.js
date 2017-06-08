@@ -6,10 +6,7 @@ peer.on('open', id => {
   myIdDisp.textContent = id;
   btnStart.style.display = '';
   btnStart.onclick = evt => {
-    webCamSetup(selfView).then(stream => {
-      var call = peer.call(callTo.value, stream);
-      callSetup(call);
-    });
+    start();
   }
   var siId = null;
   siId = setInterval(_ => {
@@ -17,11 +14,18 @@ peer.on('open', id => {
       if (list && list.length > 1) {
         clearInterval(siId);
         callTo.value = list.filter(x => x !== myId)[0];
-        btnStart();
+        start();
       }
     });
   }, 2000);
 });
+
+function start() {
+  webCamSetup(selfView).then(stream => {
+    var call = peer.call(callTo.value, stream);
+    callSetup(call);
+  });
+}
 
 peer.on('call', call => {
   console.log('peer on "call"');
