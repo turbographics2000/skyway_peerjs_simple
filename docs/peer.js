@@ -610,8 +610,8 @@
       // MEDIACONNECTION.
       util.log('Listening for remote stream');
       if ('ontrack' in pc) {
-        pc.ontrack = function(evt) {
-          if(!connection.remoteStream) {
+        pc.ontrack = function (evt) {
+          if (!connection.remoteStream) {
             connection.addStream(stream);
           }
         }
@@ -1240,6 +1240,7 @@
     /** Closes all connections to this peer. */
     Peer.prototype._cleanupPeer = function (peer) {
       var connections = this.connections[peer];
+      self.socket.send(JOSN.stringify({ type: 'LEAVE', dst: peer }));
       for (var j = 0, jj = connections.length; j < jj; j += 1) {
         connections[j].close();
       }
