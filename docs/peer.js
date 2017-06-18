@@ -433,7 +433,7 @@
             pc.addStream(options._stream);
           }
         } else {
-          conneciton.options = connection.options || {};
+          connection.options = connection.options || {};
           connection.options.constraints = {
             offerToReceiveAudio: false,
             offerToReceiveVideo: false
