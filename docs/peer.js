@@ -390,7 +390,6 @@
       }
       this.open = false;
       Negotiator.cleanup(this);
-      debugger;
       this.emit('close')
     };
 
@@ -563,13 +562,8 @@
       };
 
       pc.oniceconnectionstatechange = function () {
-        console.log('iceConnectionState:' + pc.iceConnectionState);
         switch (pc.iceConnectionState) {
-          case 'disconnected':
           case 'failed':
-            if (connection.provider.rootId) {
-              connection.provider.socket.send({ type: 'EXPIRE', closeBranch: peerId, dst: connection.provider.rootId });
-            }
             util.log('iceConnectionState is disconnected, closing connections to ' + peerId);
             connection.close();
             break;
@@ -616,8 +610,8 @@
       // MEDIACONNECTION.
       util.log('Listening for remote stream');
       if ('ontrack' in pc) {
-        pc.ontrack = function (evt) {
-          if (!connection.remoteStream) {
+        pc.ontrack = function(evt) {
+          if(!connection.remoteStream) {
             connection.addStream(stream);
           }
         }
@@ -1038,13 +1032,7 @@
           break;
 
         case 'EXPIRE': // The offer sent to a peer has expired without response.
-          if (message.closeBranch) {
-            this.emit('closebranch', message.closeBranch);
-          } else if (message.moveBranch) {
-            this.emit('movebranch', message);
-          } else {
-            this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
-          }
+          this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
           break;
         case 'OFFER': // we should consider switching this to CALL/CONNECT, but this is the least breaking option.
           var connectionId = payload.connectionId;
@@ -1252,7 +1240,6 @@
     /** Closes all connections to this peer. */
     Peer.prototype._cleanupPeer = function (peer) {
       var connections = this.connections[peer];
-      self.socket.send(JOSN.stringify({ type: 'LEAVE', dst: peer }));
       for (var j = 0, jj = connections.length; j < jj; j += 1) {
         connections[j].close();
       }
