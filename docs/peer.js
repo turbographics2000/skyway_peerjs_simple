@@ -390,6 +390,7 @@
       }
       this.open = false;
       Negotiator.cleanup(this);
+      debugger;
       this.emit('close')
     };
 
@@ -566,6 +567,9 @@
         switch (pc.iceConnectionState) {
           case 'disconnected':
           case 'failed':
+            if (connection.provider.rootId) {
+              connection.provider.socket.send({ type: 'EXPIRE', closeBranch: peerId, dst: connection.provider.rootId });
+            }
             util.log('iceConnectionState is disconnected, closing connections to ' + peerId);
             connection.close();
             break;
@@ -1034,7 +1038,13 @@
           break;
 
         case 'EXPIRE': // The offer sent to a peer has expired without response.
-          this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
+          if (message.closeBranch) {
+            this.emit('closebranch', message.closeBranch);
+          } else if (message.moveBranch) {
+            this.emit('movebranch', message);
+          } else {
+            this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
+          }
           break;
         case 'OFFER': // we should consider switching this to CALL/CONNECT, but this is the least breaking option.
           var connectionId = payload.connectionId;
