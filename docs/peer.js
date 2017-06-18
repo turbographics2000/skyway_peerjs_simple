@@ -435,8 +435,8 @@
         } else {
           connection.options = connection.options || {};
           connection.options.constraints = {
-            offerToReceiveAudio: false,
-            offerToReceiveVideo: false
+            offerToReceiveAudio: true,
+            offerToReceiveVideo: true
           };
           this._makeOffer(connection);
         }
