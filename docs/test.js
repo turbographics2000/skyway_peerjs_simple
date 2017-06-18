@@ -22,10 +22,10 @@ peer.on('open', id => {
 });
 
 function start() {
-  webCamSetup(selfView).then(stream => {
+  // webCamSetup(selfView).then(stream => {
     var call = peer.call(callTo.value, stream);
-    callSetup(call);
-  });
+  //   callSetup(call);
+  // });
 }
 
 peer.on('call', call => {
