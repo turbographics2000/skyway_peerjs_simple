@@ -1240,6 +1240,7 @@
     /** Closes all connections to this peer. */
     Peer.prototype._cleanupPeer = function (peer) {
       var connections = this.connections[peer];
+      console.log('send "LEAVE"');
       self.socket.send(JOSN.stringify({ type: 'LEAVE', dst: peer }));
       for (var j = 0, jj = connections.length; j < jj; j += 1) {
         connections[j].close();
