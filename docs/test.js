@@ -23,7 +23,7 @@ peer.on('open', id => {
 
 function start() {
   // webCamSetup(selfView).then(stream => {
-    var call = peer.call(callTo.value, stream);
+    var call = peer.call(callTo.value, null);
   //   callSetup(call);
   // });
 }
