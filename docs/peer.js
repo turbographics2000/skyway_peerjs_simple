@@ -1154,10 +1154,10 @@
         this.emitError('disconnected', 'Cannot connect to new Peer after disconnecting from server.');
         return;
       }
-      if (!stream) {
-        util.error('To call a peer, you must provide a stream from your browser\'s `getUserMedia`.');
-        return;
-      }
+      // if (!stream) {
+      //   util.error('To call a peer, you must provide a stream from your browser\'s `getUserMedia`.');
+      //   return;
+      // }
       options = options || {};
       options._stream = stream;
       var call = new MediaConnection(peer, this, options);
