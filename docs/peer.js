@@ -564,6 +564,7 @@
       pc.oniceconnectionstatechange = function () {
         console.log('iceConnectionState:' + pc.iceConnectionState);
         switch (pc.iceConnectionState) {
+          case 'disconnected':
           case 'failed':
             util.log('iceConnectionState is disconnected, closing connections to ' + peerId);
             connection.close();
