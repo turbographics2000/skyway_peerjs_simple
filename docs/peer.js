@@ -319,12 +319,12 @@
 
       this.id = this.options.connectionId || MediaConnection._idPrefix + util.randomToken();
       util.log("startConnection from MediaConnection");
-      if (this.localStream) {
-        Negotiator.startConnection(
-          this,
-          { _stream: this.localStream, originator: true }
-        );
-      }
+      //if (this.localStream) {
+      Negotiator.startConnection(
+        this,
+        { _stream: this.localStream, originator: true }
+      );
+      //}
     };
 
     util.inherits(MediaConnection, EventEmitter);
@@ -422,14 +422,23 @@
       // Set the connection's PC.
       connection.pc = connection.peerConnection = pc;
 
-      if (connection.type === 'media' && options._stream) {
-        // Add the stream.
-        if ('addTrack' in pc) {
-          options._stream.getTracks().forEach(track => {
-            pc.addTrack(track, options._stream);
-          });
+      if (connection.type === 'media') {
+        if (options._stream) {
+          // Add the stream.
+          if ('addTrack' in pc) {
+            options._stream.getTracks().forEach(track => {
+              pc.addTrack(track, options._stream);
+            });
+          } else {
+            pc.addStream(options._stream);
+          }
         } else {
-          pc.addStream(options._stream);
+          conneciton.options = connection.options || {};
+          connection.options.constraints = {
+            offerToReceiveAudio: false,
+            offerToReceiveVideo: false
+          };
+          this._makeOffer(connection);
         }
       }
 
@@ -610,8 +619,8 @@
       // MEDIACONNECTION.
       util.log('Listening for remote stream');
       if ('ontrack' in pc) {
-        pc.ontrack = function(evt) {
-          if(!connection.remoteStream) {
+        pc.ontrack = function (evt) {
+          if (!connection.remoteStream) {
             connection.addStream(stream);
           }
         }
