@@ -18,7 +18,7 @@ peer.on('open', id => {
         }
       }
     });
-  }, 2000);
+  }, 3000);
 });
 
 function start() {
