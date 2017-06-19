@@ -33,8 +33,13 @@ peer.on('call', call => {
   webCamSetup(selfView).then(stream => {
     call.answer(stream);
   });
+  btnClose.style.display = '';
   callSetup(call);
 });
+
+btnClose.onclick = evt => {
+  peer.destroy();
+}
 
 function webCamSetup(elm) {
   return navigator.mediaDevices.getUserMedia({
