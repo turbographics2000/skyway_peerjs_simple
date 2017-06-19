@@ -1,5 +1,5 @@
 var debugLevel = 2;
-var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', debug: 3 });
+var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', /*debug: 3*/ });
 
 peer.on('open', id => {
   console.log('peer on "open"');
@@ -33,13 +33,8 @@ peer.on('call', call => {
   webCamSetup(selfView).then(stream => {
     call.answer(stream);
   });
-  btnClose.style.display = '';
   callSetup(call);
 });
-
-btnClose.onclick = evt => {
-  peer.destroy();
-}
 
 function webCamSetup(elm) {
   return navigator.mediaDevices.getUserMedia({
