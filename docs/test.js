@@ -30,9 +30,9 @@ function start() {
 
 peer.on('call', call => {
   console.log('peer on "call"');
-  // webCamSetup(selfView).then(stream => {
-    call.answer(null);
-  // });
+  webCamSetup(selfView).then(stream => {
+    call.answer(stream);
+  });
   callSetup(call);
 });
 
