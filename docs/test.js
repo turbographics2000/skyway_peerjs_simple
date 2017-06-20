@@ -42,10 +42,13 @@ btnAddStream.onclick = evt => {
   });
 }
 
+var vIdx = 0;
 peer.on('call', call => {
   console.log('peer on "call"');
-  webCamSetup(selfView).then(stream => {
+
+  webCamSetup(selfView, videoDevices[vIdx]).then(stream => {
     call.answer(stream);
+    vIdx++;
   });
   callSetup(call);
 });
