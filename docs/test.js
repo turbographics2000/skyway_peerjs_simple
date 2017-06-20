@@ -31,6 +31,7 @@ function start() {
   webCamSetup(selfView, videoDevices[0]).then(stream => {
     call = peer.call(callTo.value, stream);
     callSetup(call);
+    btnAddStream.style.display = '';
   });
 }
 
@@ -68,7 +69,6 @@ function callSetup(call) {
     console.log('videoTracks', stream.getVideoTracks().length);
     console.log('call on "stream"');
     remoteView.srcObject = stream;
-    btnAddStream.style.display = '';
   });
   call.on('close', _ => {
     console.log('call on "close"');
