@@ -1,5 +1,11 @@
 var debugLevel = 2;
 var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', /*debug: 3*/ });
+var call = null;
+
+var videoDevices = null;
+navigator.mediaDevices.enumerateDevices().then(devices => {
+  videoDevices = devices.filter(device => device.kind === 'videoinput');
+})
 
 peer.on('open', id => {
   console.log('peer on "open"');
@@ -22,9 +28,17 @@ peer.on('open', id => {
 });
 
 function start() {
-  webCamSetup(selfView).then(stream => {
-    var call = peer.call(callTo.value, stream);
+  webCamSetup(selfView, devices[0]).then(stream => {
+    call = peer.call(callTo.value, stream);
     callSetup(call);
+  });
+}
+
+btnAddStream.onclick = evt => {
+  webCamSetup(selfView, devices[1]).then(stream => {
+    stream.getTracks().forEach(track => {
+      call.localStream.addTrack(track);
+    });
   });
 }
 
@@ -36,9 +50,9 @@ peer.on('call', call => {
   callSetup(call);
 });
 
-function webCamSetup(elm) {
+function webCamSetup(elm, device) {
   return navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: { deviceId: device.deviceId },
     audio: false
   }).then(stream => {
     elm.srcObject = stream;
@@ -50,6 +64,7 @@ function callSetup(call) {
   call.on('stream', stream => {
     console.log('call on "stream"');
     remoteView.srcObject = stream;
+    btnAddStream.style.display = '';
   });
   call.on('close', _ => {
     console.log('call on "close"');
