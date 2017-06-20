@@ -1021,6 +1021,7 @@ Peer.prototype._handleMessage = function(message) {
       if (connection) {
         util.warn('Offer received for existing Connection ID:', connectionId);
         //connection.handleMessage(message);
+        this.emit('call', connection);
       } else {
         // Create a new connection.
         if (payload.type === 'media') {
