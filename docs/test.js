@@ -35,7 +35,7 @@ function start() {
 }
 
 btnAddStream.onclick = evt => {
-  webCamSetup(selfView, videoDevices[1]).then(stream => {
+  webCamSetup(selfView2, videoDevices[1]).then(stream => {
     stream.getTracks().forEach(track => {
       call.localStream.addTrack(track);
     });
