@@ -28,7 +28,7 @@ peer.on('open', id => {
 });
 
 function start() {
-  webCamSetup(selfView, devices[0]).then(stream => {
+  webCamSetup(selfView, videoDevices[0]).then(stream => {
     call = peer.call(callTo.value, stream);
     callSetup(call);
   });
