@@ -631,7 +631,7 @@ Negotiator.cleanup = function(connection) {
 Negotiator._makeOffer = function(connection) {
   var pc = connection.pc;
 
-  if(!!pc.remoteDescription && !!pc.remoteDescription.type) return;
+  //if(!!pc.remoteDescription && !!pc.remoteDescription.type) return;
 
   pc.createOffer(function(offer) {
     util.log('Created offer.');
