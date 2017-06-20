@@ -65,6 +65,7 @@ function webCamSetup(elm, device) {
 
 function callSetup(call) {
   call.on('stream', stream => {
+    console.log('videoTracks', stream.getVideoTracks().length);
     console.log('call on "stream"');
     remoteView.srcObject = stream;
     btnAddStream.style.display = '';
