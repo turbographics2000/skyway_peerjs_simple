@@ -47,7 +47,7 @@ peer.on('call', call => {
   console.log('peer on "call"');
 
   webCamSetup(selfView, videoDevices[vIdx]).then(stream => {
-    call.answer(stream);
+    call.answer(null);
     vIdx++;
   });
   callSetup(call);
